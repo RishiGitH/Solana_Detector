@@ -16,7 +16,7 @@ def get_transaction_data(tx_signature):
     response = requests.post(RPC_ENDPOINT, json=payload)
     
     if response.status_code == 200:
-        print(response.json())
+        print("transaction data",response.json())
         result = response.json()["result"]
         if result:
             return result
