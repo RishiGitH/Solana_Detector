@@ -20,3 +20,12 @@ Pipfile
 
 # Serverless directories
 .serverless
+
+sample.config.py
+
+node_modules
+
+serverless.yaml
+
+package-lock.json
+package.json

@@ -2,6 +2,8 @@
 """
 AWS Lambda function entry point for multiple functionalities.
 """
+import json
+
 
 from contract_analyzer import ContractAnalyzer
 from transaction_analyzer import TransactionAnalyzer
@@ -95,6 +97,9 @@ def lambda_handler(event, context):
     """
     Main Lambda function handler to route requests to the appropriate function.
     """
+    if isinstance(event.get('body'), str):
+        event=json.loads(event["body"])
+
     action = event.get('action')
 
     if action == "analyze_contract":
