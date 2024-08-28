@@ -21,7 +21,7 @@ Pipfile
 # Serverless directories
 .serverless
 
-sample.config.py
+config.py
 
 node_modules
 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 # aws ecr get-login-password --profile rishi-all-john | docker login --username AWS --password-stdin 885181169453.dkr.ecr.ap-south-1.amazonaws.com
 
 

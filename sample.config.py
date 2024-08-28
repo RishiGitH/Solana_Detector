@@ -14,6 +14,9 @@ SOLANA_RPC_ENDPOINT = os.getenv("SOLANA_RPC_ENDPOINT")
 LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME")  
 LLM_API_KEY = os.getenv("LLM_API_KEY")  # API key for  Gen AI
 
+CONTRACT_ANALYSIS_PROMPT=""
+TRANSACTION_ANALYSIS_PROMPT=""
+CONTRACT_CODE_ANALYSIS_PROMPT=""
 
 # Optional: Set default values if environment variables are not set
 if SOLANA_RPC_ENDPOINT is None:
