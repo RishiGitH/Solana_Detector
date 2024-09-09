@@ -26,6 +26,7 @@ config.py
 node_modules
 
 serverless.yaml
-
+test.sh
+__pycache__/
 package-lock.json
 package.json
