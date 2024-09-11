@@ -23,6 +23,10 @@ Pipfile
 
 config.py
 
+*.env
+*config.py
+*serverless.yaml
+*Pipfile
 node_modules
 
 serverless.yaml
