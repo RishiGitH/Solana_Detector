@@ -21,11 +21,15 @@ Pipfile
 # Serverless directories
 .serverless
 
+cron-analysis-lambda/.serverless
+cron-analyis-lambda/__pycache__/
 config.py
 
+api_dynamo_db/.serverless
+api_dynamo_db/serverless.yaml
 *.env
-*config.py
-*serverless.yaml
+*/config.py
+*/serverless.yaml
 *Pipfile
 node_modules
 
@@ -34,3 +38,4 @@ test.sh
 __pycache__/
 package-lock.json
 package.json
+arb_api/

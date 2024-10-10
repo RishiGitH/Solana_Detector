@@ -1,68 +1,86 @@
-import requests
+import asyncio
+import aiohttp
+import random
+import json
 from datetime import datetime, timedelta
 from config import SOLANA_RPC_URL
 
-# Fetch recent transactions for a contract address and compare with DynamoDB
-def fetch_recent_transactions(contract_address, dynamo_signatures):
+
+# Fetch recent transactions for a contract address and compare with DynamoDB (Async version)
+async def fetch_recent_transactions(session, contract_address, dynamo_signatures):
+    """
+    Fetch the last 10 transaction signatures from Solana and compare them with DynamoDB.
+    Only fetch unique transaction details.
+    """
     headers = {"Content-Type": "application/json"}
     current_time = datetime.utcnow()
     one_minute_ago = current_time - timedelta(seconds=20000)
 
-    # Fetch last 10 transaction signatures from Solana
+    # Fetch the last 10 transaction signatures from Solana
     payload = {
         "jsonrpc": "2.0",
-        "id": 1,
+        "id": str(random.randint(1, 10222220)),
         "method": "getSignaturesForAddress",
-        "params": [contract_address, {"limit": 10}]
+        "params": [contract_address, {"commitment":"finalized","limit": 10}]
     }
 
-    response = requests.post(SOLANA_RPC_URL, headers=headers, json=payload)
-    if response.status_code != 200:
-        return []
-
-    recent_signatures = [tx['signature'] for tx in response.json().get('result', [])]
+    async with session.post(SOLANA_RPC_URL, headers=headers, json=payload) as response:
+        if response.status != 200:
+            print(f"Error fetching signatures for {contract_address}: {response.status}")
+            return []
+        result = await response.json()
+    
+    recent_signatures = [tx['signature'] for tx in result.get('result', [])]
 
     # Compare recent signatures with the DynamoDB signatures
     dynamo_signatures_for_contract = dynamo_signatures.get(contract_address, [])
     unique_signatures = list(set(recent_signatures) - set(dynamo_signatures_for_contract))
+    print(f"Unique signatures for {contract_address}: {unique_signatures}")
 
-    # Fetch transaction details for unique signatures
-    transactions = get_bulk_transaction_details(unique_signatures)
-    
+    # Fetch transaction details for unique signatures in parallel
+    transactions = await get_transaction_details_parallel(session, unique_signatures, contract_address)
+
     return transactions
 
 
-
-def get_bulk_transaction_details(signatures):
+# Fetch bulk transaction details for unique signatures using async/await
+async def get_transaction_details_parallel(session, signatures, contract_address):
     """
-    Fetches transaction details for a list of signatures in one call.
+    Fetches transaction details in parallel using aiohttp and asyncio.
+    """
+    if not signatures:
+        return []
+
+    tasks = [fetch_transaction(session, signature) for signature in signatures]
+    transaction_details = await asyncio.gather(*tasks)
+    txs=[]
+    for tx in transaction_details:
+        if tx:
+            tx["contract_address"]=contract_address
+            txs.append(tx)
+    return txs
+
+
+# Async function to fetch transaction details for a single signature
+async def fetch_transaction(session, signature):
+    """
+    Fetches transaction details for a single signature using the getTransaction API.
+    This function is asynchronous and runs within the event loop.
     """
     headers = {"Content-Type": "application/json"}
+    payload = {
+        "jsonrpc": "2.0",
+        "id": str(random.randint(1, 10222220)),
+        "method": "getTransaction",
+        "params": [signature, {"commitment":"finalized","encoding":"jsonParsed","maxSupportedTransactionVersion": 0}]
+    }
 
-    # Prepare a batch request for all signatures
-    payload = [
-        {
-            "jsonrpc": "2.0",
-            "id": idx + 1,
-            "method": "getConfirmedTransaction",
-            "params": [signature, "jsonParsed"]
-        }
-        for idx, signature in enumerate(signatures)
-    ]
-
-    response = requests.post(SOLANA_RPC_URL, headers=headers, json=payload)
-    
-    # Check if the request was successful
-    if response.status_code != 200:
-        print(response.text)
-        return []
-    
-    # Extract the results from the batch response
-    transaction_details = [res.get('result', None) for res in response.json()]
-    
-    print(transaction_details,len(transaction_details))
-    # Return only valid transaction details
-    return [tx for tx in transaction_details if tx]
+    async with session.post(SOLANA_RPC_URL, headers=headers, json=payload) as response:
+        if response.status != 200:
+            print(f"Error fetching transaction for {signature}: {response.status}")
+            return None
+        data = await response.json()
+        return data.get('result', None)
 
 def get_first_transaction_time(wallet_pubkey):
     """Query Solana RPC to get the time of the first transaction for a given wallet."""
