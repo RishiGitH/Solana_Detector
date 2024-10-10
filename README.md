@@ -161,11 +161,19 @@ Sifu Security is perfect for:
 
 ## 🌍 **Roadmap**
 
-1. **Q4 2024**: Launch beta version of Sifu Security with key integrations on Solana.
-2. **Q1 2025**: Full product release and on-chain integration with DAPPS.
-3. **Q2 2025**: Develop predictive AI-driven security solutions.
-4. **Q3 2025**: Specialized security offerings for enterprises.
-
+1. **Q4 2024**:
+   - Release beta version of Sifu Security's on-chain and off-chain smart contract protection platform.
+   - Launch SDK to users and on chain integration tools.
+3. **Q1 2025**:
+   - Begin onboarding early adopters from the Solana ecosystem for real-world testing.
+   - Establish partnerships with key DeFi, NFT, and cross-chain bridge projects on Solana.
+   - Complete third-party security audits to verify product efficacy.
+4. **Q2 2025**:
+    - Launch the full version of Sifu Security, including advanced real-time monitoring, automated threat response, and enterprise-grade dashboards.
+    - Expand product offerings to other blockchains such as Ethereum and Binance Smart Chain
+6. **Q3 2025**:
+   - Develop specialized solutions for enterprises needing customized security features and regulatory compliance tools.
+   - Partner with legal and regulatory bodies to ensure compliance with evolving blockchain regulations.
 ---
 
 
