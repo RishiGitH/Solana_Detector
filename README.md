@@ -87,6 +87,9 @@ sequenceDiagram
 
 ### **2. Off-Chain Monitoring Flow**
 
+![OFF Chain Demo](images/offchain_demo.png)
+
+
 ```mermaid
 graph TD;
     A[Smart Contract Transactions] -->|Real-time Monitoring| B[Off-Chain Security]
