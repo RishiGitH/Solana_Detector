@@ -89,7 +89,7 @@ sequenceDiagram
 
 ```mermaid
 graph TD;
-    A[Smart Contract Transactions] -->|Real-time Monitoring| B[On-Chain Security]
+    A[Smart Contract Transactions] -->|Real-time Monitoring| B[Off-Chain Security]
     B --> C[Threat Detection Algorithms]
     C --> D[Automated Mitigation]
     D --> E[Alerts to Dashboard]
