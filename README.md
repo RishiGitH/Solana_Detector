@@ -1,7 +1,3 @@
-Sure! Here's a user-friendly GitHub README for **Sifu Security**, incorporating the key elements to make it clear, informative, and visually appealing with suggested flow diagrams and a well-structured format:
-
----
-
 # Sifu Security 🔒
 ### Protecting Smart Contracts with On-Chain and Off-Chain Security Solutions
 
